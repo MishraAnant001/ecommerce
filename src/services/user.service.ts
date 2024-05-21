@@ -1,5 +1,5 @@
 import { IUser, IUserTemp } from "../interfaces";
-import { User } from "../models";
+import { Cart, User } from "../models";
 import bcrypt from "bcrypt"
 import { ApiError, ApiResponse, ErrorCodes, SuccessCodes } from "../utils";
 import mongoose from "mongoose";
@@ -12,15 +12,12 @@ export class UserService {
     }
 
     async createUser(userdata: IUser) {
-        let { username, password, email, phone, role } = userdata
-        password = await bcrypt.hash(password, 10);
+
+        userdata.password = await bcrypt.hash(userdata.password, 10);
         // console.log(userdata)
-        const data = await User.create({
-            username: username,
-            password: password,
-            email: email,
-            phone: phone,
-            role: role
+        const data = await User.create(userdata)
+        await Cart.create({
+            userid:data._id
         })
         // console.log(data)
         return new ApiResponse(SuccessCodes.created, data,"User registered successfully")
@@ -37,21 +34,14 @@ export class UserService {
         return new ApiResponse(SuccessCodes.ok, data, "User fetched successfully");
      }
     async updateUser(id:string,userdata:IUserTemp) {
-        let { username, password, email, phone, role } = userdata
         if(!mongoose.isValidObjectId(id)){
             throw new ApiError(ErrorCodes.badRequest,"Please provide valid user id ")
         }
-        if(password){
-            password = await bcrypt.hash(password,10);
+        if(userdata.password){
+            userdata.password = await bcrypt.hash(userdata.password,10);
         }
         
-        const data = await User.findByIdAndUpdate(id,{
-            username: username,
-            password: password,
-            email: email,
-            phone: phone,
-            role: role
-        })
+        const data = await User.findByIdAndUpdate(id,userdata)
         if (!data) {
             throw new ApiError(ErrorCodes.notFound, "No User found")
         }

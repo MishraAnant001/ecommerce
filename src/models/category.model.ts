@@ -1,11 +1,13 @@
 import mongoose from "mongoose"
-import { ICatgeory } from "../interfaces"
 
 const categorySchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        lowercase:true,
+        unique:true,
+        trim:true
     }
 })
 
-export const Category = mongoose.model<ICatgeory & mongoose.Document>("Category", categorySchema)
+export const Category = mongoose.model("Category", categorySchema)
