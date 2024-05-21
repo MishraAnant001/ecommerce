@@ -7,6 +7,7 @@ export class LoginController{
         try {
             const userdata=req.body;
             const response = await service.loginuser(userdata)
+            res.cookie("token",response.data)
             res.status(response.statusCode).json(response);
 
         } catch (error: any) {

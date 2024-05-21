@@ -1,6 +1,6 @@
 export interface IStore{
     _id?:string,
     name:string,
-    sellerid:string,
+    sellerid?:string,
     address:string
 }

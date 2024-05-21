@@ -5,6 +5,6 @@ export interface IProduct {
     description?:string,
     category:string,
     stock:number,
-    status:boolean,
-    storeid:string
+    status?:boolean,
+    storeid?:string
 }

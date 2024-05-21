@@ -1,4 +1,7 @@
 import { Request } from "express";
 export interface NewRequest extends Request{
-    user?:object
+    user?:{
+        userid:string,
+        type:string
+    }
 }

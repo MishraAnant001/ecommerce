@@ -10,7 +10,7 @@ export class UserController {
             res.status(response.statusCode).json(response)
 
         } catch (error: any) {
-            console.log("Error while getting all users!", error.message)
+            res.status(ErrorCodes.internalServerError).json({ success: false, message: `Error while getting all users! : ${error.message}` })
         }
     }
 
@@ -22,14 +22,7 @@ export class UserController {
             res.status(response.statusCode).json(response)
 
         } catch (error: any) {
-            if (error.code == 11000) {
-                res.status(ErrorCodes.badRequest).json({
-                    success: false,
-                    message: "user already exists!"
-                })
-            } else {
-                res.status(500).json({ success: false,message: `Error while registering the user! : ${error.message}` })
-            }
+            res.status(ErrorCodes.internalServerError).json({ success: false, message: `Error while registering the user! : ${error.message}` })
         }
     }
 
@@ -41,9 +34,9 @@ export class UserController {
 
         } catch (error: any) {
             if (error instanceof ApiError) {
-                res.status(error.statusCode).json({ success: false,message: error.message })
+                res.status(error.statusCode).json({ success: false, message: error.message })
             } else {
-                res.status(ErrorCodes.internalServerError).json({ success: false,message: `Error while getting the user : ${error.message}` })
+                res.status(ErrorCodes.internalServerError).json({ success: false, message: `Error while getting the user : ${error.message}` })
             }
         }
     }
@@ -56,9 +49,9 @@ export class UserController {
 
         } catch (error: any) {
             if (error instanceof ApiError) {
-                res.status(error.statusCode).json({ success: false,message: error.message })
+                res.status(error.statusCode).json({ success: false, message: error.message })
             } else {
-                res.status(500).json({ success: false,message: `Error while updating the user! : ${error.message}` })
+                res.status(500).json({ success: false, message: `Error while updating the user! : ${error.message}` })
             }
         }
     }
@@ -71,9 +64,9 @@ export class UserController {
 
         } catch (error: any) {
             if (error instanceof ApiError) {
-                res.status(error.statusCode).json({ success: false,message: error.message })
+                res.status(error.statusCode).json({ success: false, message: error.message })
             } else {
-                res.status(500).json({ success: false,message: `Error while updating the user! : ${error.message}` })
+                res.status(500).json({ success: false, message: `Error while deleting the user! : ${error.message}` })
             }
         }
     }
